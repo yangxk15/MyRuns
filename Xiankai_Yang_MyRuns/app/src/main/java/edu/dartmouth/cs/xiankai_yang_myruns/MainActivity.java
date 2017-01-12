@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileActivity";
     private static final String REF = "ProfileRef";
+    private static final String URI_INSTANCE_STATE_KEY = "SavedUri";
 
     private Uri imageUri = null;
 
@@ -103,5 +104,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickCancel(View view) {
         finish();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(URI_INSTANCE_STATE_KEY, imageUri.toString());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            imageUri = Uri.parse(savedInstanceState.getString(URI_INSTANCE_STATE_KEY));
+            ((ImageView) findViewById(R.id.profile_image)).setImageURI(imageUri);
+        }
     }
 }
