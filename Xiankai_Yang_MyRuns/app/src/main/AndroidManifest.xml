@@ -22,7 +22,7 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
 
-        <activity android:name="edu.dartmouth.cs.xiankai_yang_myruns.MainActivity">
+        <activity android:name="edu.dartmouth.cs.xiankai_yang_myruns.ProfileActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
