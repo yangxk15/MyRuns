@@ -17,20 +17,20 @@
     <string name="profile_major">Major</string>
     <string name="profile_major_hint">Your Major</string>
 
-    <string name="change">CHANGE</string>
-    <string name="save">SAVE</string>
-    <string name="cancel">CANCEL</string>
+    <string name="profile_change">CHANGE</string>
+    <string name="profile_save">SAVE</string>
+    <string name="profile_cancel">CANCEL</string>
 
     <!-- Start Fragment Strings -->
-    <string name="input_type">Input Type</string>
-    <string-array name="input_type_options">
+    <string name="start_input_type">Input Type</string>
+    <string-array name="start_input_type_options">
         <item>Manual Entry</item>
         <item>GPS</item>
         <item>Automatic</item>
 
     </string-array>
-    <string name="activity_type">Activity Type</string>
-    <string-array name="activity_type_options">
+    <string name="start_activity_type">Activity Type</string>
+    <string-array name="start_activity_type_options">
         <item>Running</item>
         <item>Walking</item>
         <item>Standing</item>
@@ -46,5 +46,30 @@
         <item>Elliptical</item>
         <item>Other</item>
     </string-array>
+
+    <string name="start_start">START</string>
+    <string name="start_sync">SYNC</string>
+
+    <!-- Settings Fragment Strings -->
+    <string name="settings_account_preferences">Account Preferences</string>
+    <string name="settings_user_profile">User Profile</string>
+    <string name="settings_user_profile_description">Name, Email, Class, etc</string>
+    <string name="settings_privacy_setting">Privacy Setting</string>
+    <string name="settings_privacy_setting_description">Posting your records anonymously</string>
+
+    <string name="settings_additional_settings">Additional Settings</string>
+    <string name="settings_unit_preference">Unit Preference</string>
+    <string name="settings_unit_preference_description">Select the units</string>
+    <string-array name="settings_unit_preference_options">
+        <item>Metric (Kilometers)</item>
+        <item>Imperial (Miles)</item>
+    </string-array>
+    <string name="settings_comments">Comments</string>
+    <string name="settings_comments_description">Please enter your comments</string>
+
+    <string name="settings_misc">Misc.</string>
+    <string name="settings_web_page">Web Page</string>
+    <string name="settings_web_page_address">http://web.cs.dartmouth.edu/</string>
+
 
 </resources>

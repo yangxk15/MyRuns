@@ -10,6 +10,7 @@ import android.os.Bundle;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.xiankai_yang_myruns.R;
+import edu.dartmouth.cs.xiankai_yang_myruns.util.FragmentPagerUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        final ArrayList<CustomizedFragment> fragmentArrayList = new ArrayList<>();
+        final ArrayList<FragmentPagerUtil> fragmentArrayList = new ArrayList<>();
         fragmentArrayList.add(new StartFragment());
         fragmentArrayList.add(new HistoryFragment());
         fragmentArrayList.add(new SettingsFragment());
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return fragmentArrayList.get(position);
+                return (Fragment) fragmentArrayList.get(position);
             }
 
             @Override
@@ -41,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.main_view_pager);
         viewPager.setAdapter(fragmentPagerAdapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 

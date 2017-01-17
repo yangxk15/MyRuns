@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
-                android:text="@string/change"/>
+                android:text="@string/profile_change"/>
         </LinearLayout>
 
         <TextView
@@ -134,14 +134,14 @@
                 android:onClick="onClickSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/save"
+                android:text="@string/profile_save"
                 android:layout_weight="1"
                 android:layout_margin="10dp"/>
             <Button
                 android:onClick="onClickCancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel"
+                android:text="@string/profile_cancel"
                 android:layout_margin="10dp"
                 android:layout_weight="1"/>
         </LinearLayout>
