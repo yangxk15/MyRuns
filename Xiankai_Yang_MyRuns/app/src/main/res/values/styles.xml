@@ -8,13 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="LayoutStyle">
+    <style name="LayoutStyle" parent="AppTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="HorizontalLayout" parent="LayoutStyle">
         <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="VerticalLayout" parent="LayoutStyle">
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="TextViewStyle" parent="LayoutStyle">
@@ -27,6 +31,7 @@
     </style>
 
     <style name="ButtonStyle" parent="LayoutStyle">
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_margin">10dp</item>
     </style>
 

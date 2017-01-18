@@ -25,14 +25,16 @@
         android:layout_marginBottom="10dp">
     </Spinner>
 
-    <Button
-        style="@style/ButtonStyle"
-        android:id="@+id/start_start"
-        android:text="@string/start_start"/>
+    <LinearLayout style="@style/VerticalLayout">
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/start_start"
+            android:text="@string/start_start"/>
 
-    <Button
-        style="@style/ButtonStyle"
-        android:id="@+id/start_sync"
-        android:text="@string/start_sync"/>
+        <Button
+            style="@style/ButtonStyle"
+            android:id="@+id/start_sync"
+            android:text="@string/start_sync"/>
+    </LinearLayout>
 
 </LinearLayout>

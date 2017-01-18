@@ -28,7 +28,7 @@
                 style="@style/ButtonStyle"
                 android:onClick="onClickChange"
                 android:text="@string/profile_change"
-                android:layout_margin="30dp"/>
+                android:layout_margin="0dp"/>
         </LinearLayout>
 
         <TextView style="@style/TextViewStyle" android:text="@string/profile_name"/>
@@ -83,12 +83,12 @@
                 style="@style/ButtonStyle"
                 android:onClick="onClickSave"
                 android:text="@string/profile_save"
-                android:layout_weight="1"/>
+                android:layout_margin="10dp"/>
             <Button
                 style="@style/ButtonStyle"
                 android:onClick="onClickCancel"
                 android:text="@string/profile_cancel"
-                android:layout_weight="1"/>
+                android:layout_margin="10dp"/>
         </LinearLayout>
 
     </LinearLayout>
