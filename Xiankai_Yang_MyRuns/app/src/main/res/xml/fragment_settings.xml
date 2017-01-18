@@ -14,6 +14,7 @@
                 android:targetClass="edu.dartmouth.cs.xiankai_yang_myruns.controller.ProfileActivity"/>
         </PreferenceScreen>
         <CheckBoxPreference
+            android:key="@string/settings_privacy_setting"
             android:title="@string/settings_privacy_setting"
             android:summary="@string/settings_privacy_setting_description"/>
     </PreferenceCategory>
@@ -21,11 +22,13 @@
     <PreferenceCategory
         android:title="@string/settings_additional_settings">
         <ListPreference
+            android:key="@string/settings_additional_settings"
             android:title="@string/settings_unit_preference"
             android:summary="@string/settings_unit_preference_description"
             android:entries="@array/settings_unit_preference_options"
             android:entryValues="@array/settings_unit_preference_options"/>
         <EditTextPreference
+            android:key="@string/settings_comments"
             android:title="@string/settings_comments"
             android:summary="@string/settings_comments_description"/>
     </PreferenceCategory>

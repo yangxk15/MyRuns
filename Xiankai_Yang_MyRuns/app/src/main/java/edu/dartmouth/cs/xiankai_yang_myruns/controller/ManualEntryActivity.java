@@ -77,10 +77,12 @@ public class ManualEntryActivity extends AppCompatActivity {
     }
 
     public void onClickSaveManualEntry(View view) {
+        Toast.makeText(getApplicationContext(), "Manual Entry Saved", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     public void onClickCancelManualEntry(View view) {
+        Toast.makeText(getApplicationContext(), "Manual Entry Discarded", Toast.LENGTH_SHORT).show();
         finish();
     }
 }
