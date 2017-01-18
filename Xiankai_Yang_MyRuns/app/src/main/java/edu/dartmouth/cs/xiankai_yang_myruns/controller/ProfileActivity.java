@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.xiankai_yang_myruns.controller;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,11 +34,13 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
     private static final String REF = "ProfileRef";
     private static final String URI_INSTANCE_STATE_KEY = "SavedUri";
+    private static final CharSequence[] PHOTO_OPTIONS = new CharSequence[]{"Take Photo", "Choose from Album", "Cancel"};
 
     private Uri imageUri = null;
 
     enum RequestCode {
         TAKE_PHOTO,
+        CHOOSE_FROM_ALBUM,
         CROP_PHOTO,
     }
 
@@ -61,14 +65,30 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickChange(View view) throws IOException {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            imageUri = FileProvider.getUriForFile(this, AUTHORITY,
-                    File.createTempFile("photo", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES)));
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            startActivityForResult(intent, RequestCode.TAKE_PHOTO.ordinal());
-        }
+    public void onClickChangeProfilePhoto(View view) throws IOException {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+        builder.setItems(PHOTO_OPTIONS, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (PHOTO_OPTIONS[which].equals("Cancel")) {
+                    return;
+                }
+                try {
+                    imageUri = FileProvider.getUriForFile(ProfileActivity.this, AUTHORITY,
+                            File.createTempFile("photo", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES)));
+                } catch (IOException e) {
+                    Log.d(TAG, e.getMessage());
+                }
+                if (PHOTO_OPTIONS[which].equals("Take Photo")) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intent, RequestCode.TAKE_PHOTO.ordinal());
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, RequestCode.CHOOSE_FROM_ALBUM.ordinal());
+                }
+            }
+        }).show();
     }
 
 
@@ -79,6 +99,9 @@ public class ProfileActivity extends AppCompatActivity {
             switch (RequestCode.values()[requestCode]) {
                 case TAKE_PHOTO:
                     Crop.of(imageUri, imageUri).asSquare().start(this, RequestCode.CROP_PHOTO.ordinal());
+                    break;
+                case CHOOSE_FROM_ALBUM:
+                    Crop.of(data.getData(), imageUri).asSquare().start(this, RequestCode.CROP_PHOTO.ordinal());
                     break;
                 case CROP_PHOTO:
                     ((ImageView) findViewById(R.id.profile_image)).setImageURI(imageUri);
@@ -92,7 +115,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickSave(View view) {
+    public void onClickSaveProfile(View view) {
         SharedPreferences.Editor editor = this.getSharedPreferences(DOMAIN, MODE_PRIVATE).edit();
 
         editor.putString(REF,
@@ -110,7 +133,7 @@ public class ProfileActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onClickCancel(View view) {
+    public void onClickCancelProfile(View view) {
         finish();
     }
 

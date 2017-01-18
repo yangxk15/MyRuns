@@ -29,8 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.ProfileActivity"/>
+        <activity android:name=".controller.ProfileActivity" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity android:name=".controller.ManualEntryActivity" />
+        <activity android:name=".controller.MapActivity"/>
     </application>
 
 </manifest>

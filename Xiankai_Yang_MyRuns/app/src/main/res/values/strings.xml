@@ -17,7 +17,7 @@
     <string name="profile_major">Major</string>
     <string name="profile_major_hint">Your Major</string>
 
-    <string name="profile_change">CHANGE</string>
+    <string name="profile_photo_change">CHANGE</string>
     <string name="profile_save">SAVE</string>
     <string name="profile_cancel">CANCEL</string>
 
@@ -71,5 +71,12 @@
     <string name="settings_web_page">Web Page</string>
     <string name="settings_web_page_address">http://web.cs.dartmouth.edu/</string>
 
+    <!-- Manual Entry Activity -->
+    <string name="manual_entry_save">SAVE</string>
+    <string name="manual_entry_cancel">CANCEL</string>
+
+    <!-- Map Activity -->
+    <string name="map_save">SAVE</string>
+    <string name="map_cancel">CANCEL</string>
 
 </resources>

@@ -26,8 +26,8 @@
                 android:src="@drawable/profile_default_image"/>
             <Button
                 style="@style/ButtonStyle"
-                android:onClick="onClickChange"
-                android:text="@string/profile_change"
+                android:onClick="onClickChangeProfilePhoto"
+                android:text="@string/profile_photo_change"
                 android:layout_margin="0dp"/>
         </LinearLayout>
 
@@ -81,12 +81,12 @@
         <LinearLayout style="@style/HorizontalLayout">
             <Button
                 style="@style/ButtonStyle"
-                android:onClick="onClickSave"
+                android:onClick="onClickSaveProfile"
                 android:text="@string/profile_save"
                 android:layout_margin="10dp"/>
             <Button
                 style="@style/ButtonStyle"
-                android:onClick="onClickCancel"
+                android:onClick="onClickCancelProfile"
                 android:text="@string/profile_cancel"
                 android:layout_margin="10dp"/>
         </LinearLayout>
