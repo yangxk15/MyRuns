@@ -83,12 +83,12 @@
                 style="@style/ButtonStyle"
                 android:onClick="onClickSave"
                 android:text="@string/profile_save"
-                android:layout_margin="10dp"/>
+                android:layout_weight="1"/>
             <Button
                 style="@style/ButtonStyle"
                 android:onClick="onClickCancel"
                 android:text="@string/profile_cancel"
-                android:layout_margin="10dp"/>
+                android:layout_weight="1"/>
         </LinearLayout>
 
     </LinearLayout>

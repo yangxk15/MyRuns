@@ -4,43 +4,35 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_input_type"
-        android:layout_margin="10dp"/>
+        style="@style/TextViewStyle"
+        android:text="@string/start_input_type"/>
     <Spinner
+        style="@style/TextViewStyle"
         android:id="@+id/start_input_type_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:entries="@array/start_input_type_options"
-        android:layout_margin="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
     </Spinner>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_activity_type"
-        android:layout_margin="10dp"/>
+        style="@style/TextViewStyle"
+        android:text="@string/start_activity_type"/>
     <Spinner
+        style="@style/TextViewStyle"
         android:id="@+id/start_activity_type_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:entries="@array/start_activity_type_options"
-        android:layout_margin="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
     </Spinner>
 
     <Button
+        style="@style/ButtonStyle"
         android:id="@+id/start_start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_start"
-        android:layout_margin="10dp"/>
+        android:text="@string/start_start"/>
 
     <Button
+        style="@style/ButtonStyle"
         android:id="@+id/start_sync"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_sync"
-        android:layout_margin="10dp"/>
+        android:text="@string/start_sync"/>
 
 </LinearLayout>

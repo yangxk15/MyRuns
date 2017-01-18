@@ -28,7 +28,7 @@
     </style>
 
     <style name="ButtonStyle" parent="LayoutStyle">
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">10dp</item>
         <item name="app:backgroundTint">@android:color/background_dark</item>
     </style>
 

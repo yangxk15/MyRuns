@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <PreferenceCategory
+        android:layout="@layout/preference"
         android:title="@string/settings_account_preferences">
         <PreferenceScreen
             android:title="@string/settings_user_profile"
