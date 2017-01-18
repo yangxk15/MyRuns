@@ -3,9 +3,9 @@ MyRuns application for CS65
 
 Need to install Lombok plugin to compile and run if you are using Android Studio.
 
-Reference:
+# Reference:
 
-# Assignment 1
+Assignment 1
 
   Project Lombok: https://projectlombok.org/setup/android.html
   
@@ -13,7 +13,7 @@ Reference:
   
   Crop tutorial: http://www.cs.dartmouth.edu/~xingdong/Teaching/CS65/lecture14/UpdatefortheCameraApplication.htm
   
-# Assignment 2
+Assignment 2
 
   Fragments and ActionBars: http://www.cs.dartmouth.edu/~xingdong/Teaching/CS65/lecture08/lecture08.html
   
