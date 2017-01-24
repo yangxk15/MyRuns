@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.dartmouth.cs.myruns.controller.MainActivity">
+    tools:context="edu.dartmouth.cs.xiankai_yang.myruns.controller.MainActivity">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/main_tab_layout"

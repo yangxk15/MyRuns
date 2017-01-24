@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="edu.dartmouth.cs.myruns.controller.ManualEntryActivity">
+    tools:context="edu.dartmouth.cs.xiankai_yang.myruns.controller.ManualEntryActivity">
 
     <ListView
         android:layout_width="match_parent"
