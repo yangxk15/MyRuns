@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Xiankai_Yang_MyRuns</string>
+    <string name="app_name">Xiankai Yang\'s MyRuns</string>
     <string name="app_domain">edu.dartmouth.cs.xiankai_yang</string>
     <string name="app_file_provider_authority">edu.dartmouth.cs.xiankai_yang.myruns.fileprovider</string>
 
