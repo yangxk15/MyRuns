@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -56,6 +57,7 @@ public class ManualEntryActivity extends AppCompatActivity {
                 } else {
                     EditText editText = new EditText(ManualEntryActivity.this);
                     editText.setHint("Please type in your " + value);
+                    editText.setInputType(value.equals("Comment") ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_NUMBER);
                     AlertDialog.Builder builder = new AlertDialog.Builder(ManualEntryActivity.this);
                     builder
                             .setTitle(value)
