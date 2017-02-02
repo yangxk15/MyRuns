@@ -86,7 +86,7 @@ public class ExerciseEntryAdapter extends ArrayAdapter<ExerciseEntry> {
         return unitPreference.equals(DEFAULT_UNIT_PREFERENCE);
     }
 
-    private String getFormattedString(Date date) {
+    public static String getFormattedString(Date date) {
         return new SimpleDateFormat("HH:mm:ss").format(date) + " "
                 + new SimpleDateFormat("MMM").format(date) + " "
                 + new SimpleDateFormat("dd").format(date) + " "
