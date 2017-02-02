@@ -25,29 +25,7 @@
 
     <!-- Start Fragment Strings -->
     <string name="start_input_type">Input Type</string>
-    <string-array name="start_input_type_options">
-        <item>Manual Entry</item>
-        <item>GPS</item>
-        <item>Automatic</item>
-
-    </string-array>
     <string name="start_activity_type">Activity Type</string>
-    <string-array name="start_activity_type_options">
-        <item>Running</item>
-        <item>Walking</item>
-        <item>Standing</item>
-        <item>Cycling</item>
-        <item>Hiking</item>
-        <item>Downhill Skiing</item>
-        <item>Cross-Country Skiing</item>
-        <item>Snowboarding</item>
-        <item>Skating</item>
-        <item>Swimming</item>
-        <item>Mountain Biking</item>
-        <item>Wheelchair</item>
-        <item>Elliptical</item>
-        <item>Other</item>
-    </string-array>
 
     <string name="start_start">START</string>
     <string name="start_sync">SYNC</string>
@@ -80,5 +58,15 @@
     <!-- Map Activity -->
     <string name="map_save">SAVE</string>
     <string name="map_cancel">CANCEL</string>
+
+    <!-- Entry Detail Activity -->
+    <string name="entry_detail_input_type">Input Type</string>
+    <string name="entry_detail_activity_type">Activity Type</string>
+    <string name="entry_detail_date_and_time">Date and time</string>
+    <string name="entry_detail_duration">Duration</string>
+    <string name="entry_detail_distance">Distance</string>
+    <string name="entry_detail_calories">Calories</string>
+    <string name="entry_detail_heart_rate">Heart Rate</string>
+    <string name="entry_detail_delete">DELETE</string>
 
 </resources>

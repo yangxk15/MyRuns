@@ -32,6 +32,8 @@
         <activity android:name=".controller.ProfileActivity" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".controller.ManualEntryActivity" />
-        <activity android:name=".controller.MapActivity"/>
+        <activity android:name=".controller.MapActivity" />
+        <activity android:name=".controller.EntryDetailActivity"></activity>
     </application>
+
 </manifest>

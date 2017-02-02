@@ -11,18 +11,20 @@ import java.util.ArrayList;
 
 import edu.dartmouth.cs.xiankai_yang.myruns.R;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.FragmentPagerUtil;
+import lombok.Data;
 
+@Data
 public class MainActivity extends AppCompatActivity {
+    HistoryFragment mHistoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         final ArrayList<FragmentPagerUtil> fragmentArrayList = new ArrayList<>();
         fragmentArrayList.add(new StartFragment());
-        fragmentArrayList.add(new HistoryFragment());
+        fragmentArrayList.add(mHistoryFragment = new HistoryFragment());
         fragmentArrayList.add(new SettingsFragment());
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {

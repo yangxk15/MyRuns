@@ -22,7 +22,7 @@
     <PreferenceCategory
         android:title="@string/settings_additional_settings">
         <ListPreference
-            android:key="@string/settings_additional_settings"
+            android:key="@string/settings_unit_preference"
             android:title="@string/settings_unit_preference"
             android:summary="@string/settings_unit_preference_description"
             android:entries="@array/settings_unit_preference_options"
