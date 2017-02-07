@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.xiankai_yang.myruns.model;
+package edu.dartmouth.cs.xiankai_yang.myruns.util;
 
 import android.provider.BaseColumns;
 

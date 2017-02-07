@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.xiankai_yang.myruns.model;
+package edu.dartmouth.cs.xiankai_yang.myruns.util;
 
 /**
  * Created by yangxk15 on 2/1/17.

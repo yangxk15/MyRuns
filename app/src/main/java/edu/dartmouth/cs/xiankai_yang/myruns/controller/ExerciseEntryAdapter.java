@@ -2,7 +2,6 @@ package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +13,11 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import edu.dartmouth.cs.xiankai_yang.myruns.R;
-import edu.dartmouth.cs.xiankai_yang.myruns.model.ActivityType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
-import edu.dartmouth.cs.xiankai_yang.myruns.model.InputType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.Constants;
 
 /**

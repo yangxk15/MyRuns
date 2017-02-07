@@ -11,10 +11,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import edu.dartmouth.cs.xiankai_yang.myruns.R;
-import edu.dartmouth.cs.xiankai_yang.myruns.model.ActivityType;
-import edu.dartmouth.cs.xiankai_yang.myruns.model.InputType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.FragmentPagerUtil;
-import lombok.core.Main;
 
 import static android.app.Activity.RESULT_OK;
 

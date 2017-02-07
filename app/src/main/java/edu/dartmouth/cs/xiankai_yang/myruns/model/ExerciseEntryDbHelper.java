@@ -1,31 +1,28 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.model;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ExerciseEntryTableColumns;
 
 /**
  * Created by yangxk15 on 1/31/17.
  */
 
-public class ExerciseEntryDbHelper extends SQLiteOpenHelper implements ExerciseEntryTableColumns{
+public class ExerciseEntryDbHelper extends SQLiteOpenHelper implements ExerciseEntryTableColumns {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "ExerciseEntry.db";
 
     private static final String TAG = "ExerciseEntryDbHelper";
 
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + ExerciseEntryTableSchema.TABLE_NAME + " " + ExerciseEntryTableSchema.getSchema();
+            "CREATE TABLE IF NOT EXISTS " + ExerciseEntryTableSchema.TABLE_NAME +
+                    " " + ExerciseEntryTableSchema.getSchema();
     private static final String SQL_DELETE_TABLE =
             "DROP TABLE IF EXISTS " + ExerciseEntryTableSchema.TABLE_NAME;
 

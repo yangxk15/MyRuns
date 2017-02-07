@@ -4,12 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ExerciseEntryTableColumns;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -70,7 +70,8 @@ public class ExerciseEntry implements ExerciseEntryTableColumns {
         ContentValues contentValues = new ContentValues();
         contentValues.put(_INPUT_TYPE, mInputType);
         contentValues.put(_ACTIVITY_TYPE, mActivityType);
-        contentValues.put(_DATE_TIME, DATE_FORMAT.format(mDateTime.getTime()));
+        contentValues.put(_DATE_TIME, mDateTime == null
+                ? null : DATE_FORMAT.format(mDateTime.getTime()));
         contentValues.put(_DURATION, mDuration);
         contentValues.put(_DISTANCE, mDistance);
         contentValues.put(_AVG_PACE, mAvgPace);
@@ -84,15 +85,14 @@ public class ExerciseEntry implements ExerciseEntryTableColumns {
 
 
     /**
-     * Return a Calendar instance from a date string
+     * Get a Calendar instance from a date string. Return the current calendar instance if failed.
      * @param datetime
      * @return created Calendar instance
      */
     private static Calendar getCalendarFromString(String datetime) {
-        Calendar calendar = null;
+        Calendar calendar = Calendar.getInstance();
         try {
             Date date = DATE_FORMAT.parse(datetime);
-            calendar = Calendar.getInstance();
             calendar.setTime(date);
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());

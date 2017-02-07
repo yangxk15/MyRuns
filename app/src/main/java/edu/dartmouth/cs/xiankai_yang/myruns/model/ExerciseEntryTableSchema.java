@@ -1,12 +1,9 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.model;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ExerciseEntryTableColumns;
 
 /**
  * Created by yangxk15 on 1/31/17.
