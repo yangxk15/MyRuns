@@ -22,3 +22,7 @@ Assignment 2
   Preference | Android Developers: https://developer.android.com/reference/android/preference/Preference.html
   
   AlertDialog | Android Developers: https://developer.android.com/reference/android/app/AlertDialog.html
+
+Assignment 3
+
+  Saving Data in SQL Databases: https://developer.android.com/training/basics/data-storage/databases.html
