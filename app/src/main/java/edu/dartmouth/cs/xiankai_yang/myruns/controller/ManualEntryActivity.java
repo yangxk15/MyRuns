@@ -60,7 +60,7 @@ public class ManualEntryActivity extends AppCompatActivity {
 
     public void onClickSaveManualEntry(View view) {
         mExerciseEntry.setMDateTime(mCalendar);
-        long id = new ExerciseEntryDbHelper(this).insertEntry(mExerciseEntry);
+        long id = ExerciseEntryDbHelper.getInstance(this).insertEntry(mExerciseEntry);
         Toast.makeText(getApplicationContext(),
                 "Entry #" + id + " Saved", Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK, new Intent());

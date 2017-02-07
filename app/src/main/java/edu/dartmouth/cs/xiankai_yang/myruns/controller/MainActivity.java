@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import lombok.Data;
 
 @Data
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     HistoryFragment mHistoryFragment;
 
     @Override

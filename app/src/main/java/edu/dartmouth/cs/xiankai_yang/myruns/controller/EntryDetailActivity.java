@@ -49,7 +49,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.entry_detail_delete:
-                new ExerciseEntryDbHelper(this).removeEntry(mExerciseEntry.getId());
+                ExerciseEntryDbHelper.getInstance(this).removeEntry(mExerciseEntry.getId());
                 setResult(RESULT_OK, new Intent());
                 finish();
                 return true;

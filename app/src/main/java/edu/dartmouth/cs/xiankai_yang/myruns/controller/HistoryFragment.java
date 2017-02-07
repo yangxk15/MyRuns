@@ -38,7 +38,7 @@ public class HistoryFragment extends ListFragment implements FragmentPagerUtil {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
-        exerciseEntries = new ExerciseEntryDbHelper(getActivity()).fetchEntries();
+        exerciseEntries = ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries();
         adapter = new ExerciseEntryAdapter(getActivity(), exerciseEntries);
         setListAdapter(adapter);
         return view;
@@ -65,7 +65,7 @@ public class HistoryFragment extends ListFragment implements FragmentPagerUtil {
     public void reload() {
         if (exerciseEntries != null) {
             exerciseEntries.clear();
-            exerciseEntries.addAll(new ExerciseEntryDbHelper(getActivity()).fetchEntries());
+            exerciseEntries.addAll(ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries());
             adapter.notifyDataSetChanged();
         }
     }

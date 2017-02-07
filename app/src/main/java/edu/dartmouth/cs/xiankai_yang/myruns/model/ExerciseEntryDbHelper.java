@@ -18,6 +18,8 @@ public class ExerciseEntryDbHelper extends SQLiteOpenHelper implements ExerciseE
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "ExerciseEntry.db";
 
+    private static ExerciseEntryDbHelper instance;
+
     private static final String TAG = "ExerciseEntryDbHelper";
 
     private static final String SQL_CREATE_TABLE =
@@ -26,8 +28,16 @@ public class ExerciseEntryDbHelper extends SQLiteOpenHelper implements ExerciseE
     private static final String SQL_DELETE_TABLE =
             "DROP TABLE IF EXISTS " + ExerciseEntryTableSchema.TABLE_NAME;
 
-    public ExerciseEntryDbHelper(Context context) {
+    private ExerciseEntryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static ExerciseEntryDbHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new ExerciseEntryDbHelper(context);
+        }
+
+        return instance;
     }
 
     @Override
