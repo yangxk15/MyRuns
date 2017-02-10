@@ -26,3 +26,8 @@ Assignment 2
 Assignment 3
 
   Saving Data in SQL Databases: https://developer.android.com/training/basics/data-storage/databases.html
+
+Assignment 4
+  Bound Service: https://developer.android.com/guide/components/bound-services.html
+
+  Services, BroadcastReceivers and Notifications: http://www.cs.dartmouth.edu/~xingdong/Teaching/CS65/lecture19/lecture19.html
