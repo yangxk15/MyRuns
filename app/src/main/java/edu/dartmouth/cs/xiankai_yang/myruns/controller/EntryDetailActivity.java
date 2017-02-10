@@ -34,7 +34,7 @@ public class EntryDetailActivity extends AppCompatActivity {
                 .setText(ExerciseEntryAdapter.getFormattedString(mExerciseEntry
                         .getMDateTime().getTime()));
         ((EditText) findViewById(R.id.entry_detail_duration))
-                .setText(mExerciseEntry.getMDuration() + " secs");
+                .setText(ExerciseEntryAdapter.getFormattedTime(mExerciseEntry.getMDuration()));
         ((EditText) findViewById(R.id.entry_detail_distance))
                 .setText(ExerciseEntryAdapter.getDistanceByUnitPreference(
                         mExerciseEntry.getMDistance(), this

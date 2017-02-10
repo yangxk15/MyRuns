@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@string/start_input_type"/>
+        <Spinner
+            style="@style/TextViewStyle"
+            android:id="@+id/start_input_type_spinner"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+        </Spinner>
 
-    <TextView
-        style="@style/TextViewStyle"
-        android:text="@string/start_input_type"/>
-    <Spinner
-        style="@style/TextViewStyle"
-        android:id="@+id/start_input_type_spinner"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-    </Spinner>
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@string/start_activity_type"/>
+        <Spinner
+            style="@style/TextViewStyle"
+            android:id="@+id/start_activity_type_spinner"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+        </Spinner>
 
-    <TextView
-        style="@style/TextViewStyle"
-        android:text="@string/start_activity_type"/>
-    <Spinner
-        style="@style/TextViewStyle"
-        android:id="@+id/start_activity_type_spinner"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-    </Spinner>
+        <LinearLayout style="@style/VerticalLayout">
+            <Button
+                style="@style/ButtonStyle"
+                android:id="@+id/start_start"
+                android:text="@string/start_start"/>
 
-    <LinearLayout style="@style/VerticalLayout">
-        <Button
-            style="@style/ButtonStyle"
-            android:id="@+id/start_start"
-            android:text="@string/start_start"/>
+            <Button
+                style="@style/ButtonStyle"
+                android:id="@+id/start_sync"
+                android:text="@string/start_sync"/>
+        </LinearLayout>
 
-        <Button
-            style="@style/ButtonStyle"
-            android:id="@+id/start_sync"
-            android:text="@string/start_sync"/>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

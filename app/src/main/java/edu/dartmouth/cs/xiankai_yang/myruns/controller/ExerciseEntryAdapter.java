@@ -26,7 +26,6 @@ import edu.dartmouth.cs.xiankai_yang.myruns.util.Constants;
 
 public class ExerciseEntryAdapter extends ArrayAdapter<ExerciseEntry> {
     public static final String DEFAULT_UNIT_PREFERENCE = "Imperial (Miles)";
-    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.00");
 
     public ExerciseEntryAdapter(Context context, ArrayList<ExerciseEntry> entries) {
         super(context, 0, entries);
@@ -49,7 +48,7 @@ public class ExerciseEntryAdapter extends ArrayAdapter<ExerciseEntry> {
         );
         ((TextView) convertView.findViewById(R.id.entry_details)).setText(
                 getDistanceByUnitPreference(exerciseEntry.getMDistance(), getContext()) + ", " +
-                        String.valueOf(exerciseEntry.getMDuration()) + " secs"
+                        getFormattedTime(exerciseEntry.getMDuration())
         );
 
         return convertView;
@@ -61,13 +60,23 @@ public class ExerciseEntryAdapter extends ArrayAdapter<ExerciseEntry> {
      * @return
      */
     public static String getDistanceByUnitPreference(float distance, Context context) {
-        if (distance == 0) {
-            return isDefaultUnitPreference(context) ? "0 Miles" : "0 Kilometers";
+        boolean isNegative = false;
+        if (distance < 0) {
+            distance = -distance;
+            isNegative = true;
         }
-        return isDefaultUnitPreference(context)
-                ? DECIMAL_FORMAT.format(distance) + " Miles"
-                : DECIMAL_FORMAT.format(distance
-                / (float) Constants.MILES_PER_KILOMETER) + " Kilometers";
+
+        String d = isDefaultUnitPreference(context)
+                ? String.format("%.2f", distance)
+                : String.format("%.2f", distance / (float) Constants.MILES_PER_KILOMETER);
+
+        if (d.equals("0.00")) {
+            d = "0";
+            isNegative = false;
+        }
+
+        return (isNegative ? "-" : "")
+                + d + (isDefaultUnitPreference(context) ? " Miles" : " Kilometers");
     }
 
     /**
@@ -83,11 +92,27 @@ public class ExerciseEntryAdapter extends ArrayAdapter<ExerciseEntry> {
         );
         return unitPreference.equals(DEFAULT_UNIT_PREFERENCE);
     }
+    public static String getFormattedTime(int secs) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if (secs / 60 != 0) {
+            stringBuilder.append(secs / 60);
+            stringBuilder.append(" min ");
+        }
+
+        if (secs % 60 != 0) {
+            stringBuilder.append(secs % 60);
+            stringBuilder.append(" sec ");
+        }
+
+        if (stringBuilder.toString().isEmpty()) {
+            return "0 sec ";
+        }
+
+        return stringBuilder.toString();
+    }
 
     public static String getFormattedString(Date date) {
-        return new SimpleDateFormat("HH:mm:ss").format(date) + " "
-                + new SimpleDateFormat("MMM").format(date) + " "
-                + new SimpleDateFormat("dd").format(date) + " "
-                + new SimpleDateFormat("yyyy").format(date);
+        return new SimpleDateFormat("HH:mm:ss MMM dd yyyy").format(date);
     }
 }

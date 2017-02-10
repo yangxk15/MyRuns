@@ -55,10 +55,12 @@ public class StartFragment extends Fragment implements FragmentPagerUtil {
                                 getActivity(),
                                 inputType.equals(InputType.MANUAL_ENTRY.toString())
                                         ? ManualEntryActivity.class
-                                        : MapActivity.class
+                                        : MapDisplayActivity.class
                         );
-                        intent.putExtra(INPUT_TYPE, InputType.fromString(inputType).ordinal());
-                        intent.putExtra(ACTIVITY_TYPE, ActivityType.fromString(activityType).ordinal());
+                        intent.putExtra(INPUT_TYPE,
+                                InputType.fromString(inputType).ordinal());
+                        intent.putExtra(ACTIVITY_TYPE,
+                                ActivityType.fromString(activityType).ordinal());
                         startActivityForResult(intent, MANUAL_ENTRY_REQUEST_CODE);
                     }
         });
@@ -70,9 +72,7 @@ public class StartFragment extends Fragment implements FragmentPagerUtil {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == MANUAL_ENTRY_REQUEST_CODE) {
-                ((MainActivity) getActivity()).getMHistoryFragment().reload();
-            }
+            ((MainActivity) getActivity()).getMHistoryFragment().reload();
         }
     }
 

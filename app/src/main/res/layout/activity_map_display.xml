@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="edu.dartmouth.cs.xiankai_yang.myruns.controller.MapDisplayActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <fragment
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:id="@+id/google_map"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                tools:layout="@layout/fragment_map" />
+    </FrameLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+                <TextView
+                    android:id="@+id/map_stats"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true">
+                <Button
+                    android:id="@+id/map_save"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:onClick="onClickSaveMap"
+                    android:text="@string/map_save"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/map_cancel"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:onClick="onClickCancelMap"
+                    android:text="@string/map_cancel"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+</RelativeLayout>

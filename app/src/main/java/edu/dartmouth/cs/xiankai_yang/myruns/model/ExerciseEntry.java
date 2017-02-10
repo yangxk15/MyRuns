@@ -4,7 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -23,6 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ExerciseEntry implements ExerciseEntryTableColumns {
     private static final String TAG = "ExerciseEntry";
+    private static final int L = Double.SIZE / Byte.SIZE;
     public static final SimpleDateFormat DATE_FORMAT =
             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
@@ -38,7 +43,7 @@ public class ExerciseEntry implements ExerciseEntryTableColumns {
     private float mClimb;         // Climb. Either in meters or feet.
     private int mHeartRate;       // Heart rate
     private String mComment;       // Comments
-    //private ArrayList<LatLng> mLocationList; // Location list
+    private ArrayList<LatLng> mLocationList; // Location list
 
     /**
      * Create a new ExerciseEntry instance from the current cursor
@@ -58,7 +63,8 @@ public class ExerciseEntry implements ExerciseEntryTableColumns {
                 cursor.getInt(cursor.getColumnIndex(_CALORIES)),
                 cursor.getFloat(cursor.getColumnIndex(_CLIMB)),
                 cursor.getInt(cursor.getColumnIndex(_HEART_RATE)),
-                cursor.getString(cursor.getColumnIndex(_COMMENT))
+                cursor.getString(cursor.getColumnIndex(_COMMENT)),
+                fromLocationListByteArray(cursor.getBlob(cursor.getColumnIndex(_GPS_DATA)))
         );
     }
 
@@ -80,6 +86,7 @@ public class ExerciseEntry implements ExerciseEntryTableColumns {
         contentValues.put(_CLIMB, mClimb);
         contentValues.put(_HEART_RATE, mHeartRate);
         contentValues.put(_COMMENT, mComment);
+        contentValues.put(_GPS_DATA, toLocationListByteArray(mLocationList));
         return contentValues;
     }
 
@@ -99,5 +106,35 @@ public class ExerciseEntry implements ExerciseEntryTableColumns {
         } finally {
             return calendar;
         }
+    }
+
+    private static byte[] toLocationListByteArray(ArrayList<LatLng> locationArrayList) {
+        if (locationArrayList == null) {
+            return null;
+        }
+
+        byte[] bytes = new byte[locationArrayList.size() * L * 2];
+        for (int i = 0; i < locationArrayList.size(); i++) {
+            ByteBuffer.wrap(bytes, i * L * 2, L).putDouble(locationArrayList.get(i).latitude);
+            ByteBuffer.wrap(bytes, i * L * 2 + L, L).putDouble(locationArrayList.get(i).longitude);
+        }
+        return bytes;
+    }
+
+    private static ArrayList<LatLng> fromLocationListByteArray(byte[] locationByteArray) {
+        if (locationByteArray == null) {
+            return null;
+        }
+
+        ArrayList<LatLng> arrayList = new ArrayList<>();
+        for (int i = 0; i < locationByteArray.length / 2 / L; i++) {
+            arrayList.add(
+                    new LatLng(
+                            ByteBuffer.wrap(locationByteArray, i * L * 2, L).getDouble(),
+                            ByteBuffer.wrap(locationByteArray, i * L * 2 + L, L).getDouble()
+                    )
+            );
+        }
+        return arrayList;
     }
 }

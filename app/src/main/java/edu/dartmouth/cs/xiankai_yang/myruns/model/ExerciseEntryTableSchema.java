@@ -24,7 +24,8 @@ public class ExerciseEntryTableSchema implements ExerciseEntryTableColumns {
             _CALORIES,
             _CLIMB,
             _HEART_RATE,
-            _COMMENT
+            _COMMENT,
+            _GPS_DATA
     };
     public static final HashMap<String, String> _COLUMN_TYPE = new HashMap<>();
 

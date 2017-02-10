@@ -20,6 +20,7 @@ import edu.dartmouth.cs.xiankai_yang.myruns.R;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntryDbHelper;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.FragmentPagerUtil;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,7 +48,12 @@ public class HistoryFragment extends ListFragment implements FragmentPagerUtil {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         ExerciseEntry exerciseEntry = exerciseEntries.get(position);
-        Intent intent = new Intent(getActivity(), EntryDetailActivity.class);
+        Intent intent = new Intent(
+                getActivity(),
+                exerciseEntry.getMInputType() == InputType.MANUAL_ENTRY.ordinal()
+                        ? EntryDetailActivity.class
+                        : MapDisplayActivity.class
+        );
         intent.putExtra(EXERCISE_ENTRY, new Gson().toJson(exerciseEntry));
         startActivityForResult(intent, ENTRY_DETAIL_REQUEST_CODE);
     }
@@ -65,7 +71,9 @@ public class HistoryFragment extends ListFragment implements FragmentPagerUtil {
     public void reload() {
         if (exerciseEntries != null) {
             exerciseEntries.clear();
-            exerciseEntries.addAll(ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries());
+            exerciseEntries.addAll(
+                    ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries()
+            );
             adapter.notifyDataSetChanged();
         }
     }
