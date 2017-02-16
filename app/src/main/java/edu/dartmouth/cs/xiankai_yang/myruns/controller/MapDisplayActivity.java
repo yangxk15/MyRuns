@@ -5,24 +5,19 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,7 +37,7 @@ import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntryDbHelper;
 import edu.dartmouth.cs.xiankai_yang.myruns.service.TrackingService;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
-import edu.dartmouth.cs.xiankai_yang.myruns.util.Constants;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.MessengerHelper;
 
 @TargetApi(24)
 public class MapDisplayActivity extends AppCompatActivity
@@ -84,8 +79,8 @@ public class MapDisplayActivity extends AppCompatActivity
                     getIntent().getExtras().getString(HistoryFragment.EXERCISE_ENTRY),
                     ExerciseEntry.class
             );
-            ((Button) findViewById(R.id.map_save)).setVisibility(View.GONE);
-            ((Button) findViewById(R.id.map_cancel)).setVisibility(View.GONE);
+            findViewById(R.id.map_save).setVisibility(View.GONE);
+            findViewById(R.id.map_cancel).setVisibility(View.GONE);
         }
 
         if (!mHistory && !TrackingService.mStarted) {
@@ -124,7 +119,6 @@ public class MapDisplayActivity extends AppCompatActivity
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -215,7 +209,11 @@ public class MapDisplayActivity extends AppCompatActivity
     @TargetApi(24)
     private void setStats() {
         mTextView.setText(TextUtils.join(System.lineSeparator(), new String[]{
-                "Type: " + ActivityType.values()[mExerciseEntry.getMActivityType()].toString(),
+                "Type: " + (mHistory || !TrackingService.mAutomatic
+                        ? ActivityType.values()[mExerciseEntry.getMActivityType()].toString()
+                        : TrackingService.mCurrentActivityType == null
+                                ? "Unknown"
+                                : TrackingService.mCurrentActivityType.toString()),
                 "Avg speed: " + ExerciseEntryAdapter.getDistanceByUnitPreference(
                         mExerciseEntry.getMAvgSpeed(), this
                 ) + "/h",
@@ -239,14 +237,7 @@ public class MapDisplayActivity extends AppCompatActivity
 
         mServiceMessenger = new Messenger(service);
 
-        Message message = Message.obtain(null, REGISTER);
-        message.replyTo = mMessenger;
-
-        try {
-            mServiceMessenger.send(message);
-        } catch (RemoteException e) {
-            Log.d(TAG, e.getMessage());
-        }
+        MessengerHelper.sendMessage(mMessenger, mServiceMessenger, REGISTER);
 
         mExerciseEntry = TrackingService.mExerciseEntry;
         display();
@@ -287,16 +278,7 @@ public class MapDisplayActivity extends AppCompatActivity
 
     public void doUnbindService() {
         if (!mHistory && mConnected) {
-            if (mServiceMessenger != null) {
-                Message message = Message.obtain(null, UNREGISTER);
-                message.replyTo = mMessenger;
-
-                try {
-                    mServiceMessenger.send(message);
-                } catch (RemoteException e) {
-                    Log.d(TAG, e.getMessage());
-                }
-            }
+            MessengerHelper.sendMessage(mMessenger, mServiceMessenger, UNREGISTER);
             unbindService(this);
             mConnected = false;
         }
@@ -322,6 +304,11 @@ public class MapDisplayActivity extends AppCompatActivity
         }
         return super.onCreateOptionsMenu(menu);
     }
+    
+    @Override
+    public void onBackPressed() {
+        onClickCancelMap(null);
+    }
 
     private class TrackingServiceHandler extends Handler {
         @Override
@@ -333,5 +320,4 @@ public class MapDisplayActivity extends AppCompatActivity
             }
         }
     }
-
 }

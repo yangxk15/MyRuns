@@ -8,18 +8,20 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Binder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
-import android.os.ResultReceiver;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
@@ -27,22 +29,28 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import edu.dartmouth.cs.xiankai_yang.myruns.R;
 import edu.dartmouth.cs.xiankai_yang.myruns.controller.MapDisplayActivity;
 import edu.dartmouth.cs.xiankai_yang.myruns.controller.StartFragment;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
+import edu.dartmouth.cs.xiankai_yang.myruns.model.WekaClassifier;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.Constants;
-
-import static android.app.Activity.RESULT_OK;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.FFT;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.MessengerHelper;
 
 /**
  * Created by yangxk15 on 2/7/17.
  */
 
-public class TrackingService extends Service implements LocationListener {
+public class TrackingService extends Service
+        implements LocationListener, SensorEventListener {
     private static final String TAG = "TrackingService";
     private static final int NOTIFICATION = 0;
+    private static final int BUFFER_SIZE = 64;
 
     public static final int UPDATE = 0;
 
@@ -50,6 +58,7 @@ public class TrackingService extends Service implements LocationListener {
     public static ExerciseEntry mExerciseEntry;
     public static boolean mStarted;
     public static float mCurSpeed;
+    public static ActivityType mCurrentActivityType;
 
     private Location lastLocation;
     private Calendar lastCalendar;
@@ -57,6 +66,13 @@ public class TrackingService extends Service implements LocationListener {
 
     private Messenger mClientMessenger;
     private final Messenger mMessenger = new Messenger(new MapDisplayActivityHandler());
+
+    private SensorManager mSensorManager;
+    private ArrayBlockingQueue<Double> mAccBuffer = new ArrayBlockingQueue<>(BUFFER_SIZE);
+    private ActivityTypePredictionTask mPredictionTask;
+    public int[] mActivityTypeCounter = new int[3];
+
+    public static boolean mAutomatic;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -79,6 +95,18 @@ public class TrackingService extends Service implements LocationListener {
             mExerciseEntry.getMLocationList().add(
                     new LatLng(startLocation.getLatitude(), startLocation.getLongitude())
             );
+        }
+
+        if (intent.getExtras().getInt(StartFragment.INPUT_TYPE) == InputType.AUTOMATIC.ordinal()) {
+            mAutomatic = true;
+
+            mPredictionTask = new ActivityTypePredictionTask();
+            mPredictionTask.execute();
+
+            mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+            mSensorManager.registerListener(this,
+                    mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
+                    mSensorManager.SENSOR_DELAY_FASTEST);
         }
 
         mStarted = true;
@@ -104,17 +132,7 @@ public class TrackingService extends Service implements LocationListener {
 
         updateExerciseEntry(location);
 
-        if (mClientMessenger != null) {
-            Message message = Message.obtain(null, UPDATE);
-            message.replyTo = mMessenger;
-
-            try {
-                mClientMessenger.send(message);
-            } catch (RemoteException e) {
-                mClientMessenger = null;
-                Log.d(TAG, e.getMessage());
-            }
-        }
+        MessengerHelper.sendMessage(mMessenger, mClientMessenger, UPDATE);
     }
 
     @Override
@@ -162,7 +180,8 @@ public class TrackingService extends Service implements LocationListener {
     private void initExerciseEntry(Bundle bundle) {
         mExerciseEntry = new ExerciseEntry();
         mExerciseEntry.setMInputType(bundle.getInt(StartFragment.INPUT_TYPE));
-        mExerciseEntry.setMActivityType(bundle.getInt(StartFragment.ACTIVITY_TYPE));
+        mExerciseEntry.setMActivityType(mAutomatic ? -1
+                : bundle.getInt(StartFragment.ACTIVITY_TYPE));
         mExerciseEntry.setMDateTime(lastCalendar = Calendar.getInstance());
         mExerciseEntry.setMLocationList(new ArrayList<LatLng>());
     }
@@ -226,10 +245,119 @@ public class TrackingService extends Service implements LocationListener {
     }
 
     private void cleanUp() {
-        mExerciseEntry = null;
-        mStarted = false;
         ((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
                 .cancel(NOTIFICATION);
+
+        if (mAutomatic) {
+            mSensorManager.unregisterListener(this);
+            mPredictionTask.cancel(true);
+        }
+
+        mExerciseEntry = null;
+        mStarted = false;
+    }
+
+    @Override
+    public void onSensorChanged (SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+            double m = Math.sqrt(event.values[0] * event.values[0]
+                    + event.values[1] * event.values[1] + event.values[2] * event.values[2]);
+            try {
+                mAccBuffer.add(m);
+            } catch (IllegalStateException e) {
+                ArrayBlockingQueue<Double> newBuf =
+                        new ArrayBlockingQueue<>(mAccBuffer.size() * 2);
+                mAccBuffer.drainTo(newBuf);
+                mAccBuffer = newBuf;
+                mAccBuffer.add(m);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+    private class ActivityTypePredictionTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            FFT fft = new FFT(BUFFER_SIZE);
+
+            double[] re = new double[BUFFER_SIZE];
+
+            int i = 0;
+
+            while (true) {
+                try {
+                    if (isCancelled()) {
+                        return null;
+                    }
+
+                    re[i++] = mAccBuffer.take();
+
+                    if (i == BUFFER_SIZE) {
+                        i = 0;
+
+                        Double[] ma = new Double[BUFFER_SIZE + 1];
+
+                        double max = Double.MIN_VALUE;
+                        for (double v : re) {
+                            max = Math.max(max, v);
+                        }
+                        ma[BUFFER_SIZE] = max;
+
+                        double[] im = new double[BUFFER_SIZE];
+
+                        fft.fft(re, im);
+
+                        for (int j = 0; j < re.length; j++) {
+                            ma[j] = Math.sqrt(re[j] * re[j] + im[j] * im[j]);
+                        }
+
+
+                        int p = (int) WekaClassifier.classify(ma);
+                        mActivityTypeCounter[p]++;
+                        switch (p) {
+                            case 0:
+                                mCurrentActivityType = ActivityType.STANDING;
+                                break;
+                            case 1:
+                                mCurrentActivityType = ActivityType.WALKING;
+                                break;
+                            case 2:
+                                mCurrentActivityType = ActivityType.RUNNING;
+                                break;
+                            default:
+                                Log.d(TAG, "Shouldn't come here!");
+                        }
+
+                        int maxIndex = 0;
+                        for (int j = 0; j < mActivityTypeCounter.length; j++) {
+                            if (mActivityTypeCounter[j] > mActivityTypeCounter[maxIndex]) {
+                                maxIndex = j;
+                            }
+                        }
+
+                        switch (maxIndex) {
+                            case 0:
+                                mExerciseEntry.setMActivityType(ActivityType.STANDING.ordinal());
+                                break;
+                            case 1:
+                                mExerciseEntry.setMActivityType(ActivityType.WALKING.ordinal());
+                                break;
+                            case 2:
+                                mExerciseEntry.setMActivityType(ActivityType.RUNNING.ordinal());
+                                break;
+                            default:
+                                Log.d(TAG, "Shouldn't come here!");
+                        }
+
+                        MessengerHelper.sendMessage(mMessenger, mClientMessenger, UPDATE);
+                    }
+                } catch (Exception e) {
+                    Log.d(TAG, e.getMessage());
+                }
+            }
+        }
     }
 
 }

@@ -9,20 +9,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-import edu.dartmouth.cs.xiankai_yang.myruns.R;
-import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.EntryDialogType;
-import lombok.AllArgsConstructor;
 
 /**
  * Created by yangxk15 on 2/6/17.

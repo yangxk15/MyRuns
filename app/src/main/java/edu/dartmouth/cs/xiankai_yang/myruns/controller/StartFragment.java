@@ -1,8 +1,8 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +12,8 @@ import android.widget.Spinner;
 
 import edu.dartmouth.cs.xiankai_yang.myruns.R;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
-import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.FragmentPagerUtil;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
 
 import static android.app.Activity.RESULT_OK;
 

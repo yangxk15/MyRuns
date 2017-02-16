@@ -9,16 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import edu.dartmouth.cs.xiankai_yang.myruns.R;
-import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
-import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.Constants;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
 
 /**
  * Created by yangxk15 on 2/1/17.
