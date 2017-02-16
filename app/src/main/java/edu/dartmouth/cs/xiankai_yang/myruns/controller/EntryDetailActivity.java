@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -49,7 +50,14 @@ public class EntryDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.entry_detail_delete:
-                ExerciseEntryDbHelper.getInstance(this).removeEntry(mExerciseEntry.getId());
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... arg0) {
+                        ExerciseEntryDbHelper.getInstance(EntryDetailActivity.this)
+                                .removeEntry(mExerciseEntry.getId());
+                        return null;
+                    }
+                }.execute();
                 setResult(RESULT_OK, new Intent());
                 finish();
                 return true;

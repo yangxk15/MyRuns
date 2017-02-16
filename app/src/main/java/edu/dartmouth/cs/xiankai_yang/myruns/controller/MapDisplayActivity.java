@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -251,9 +252,18 @@ public class MapDisplayActivity extends AppCompatActivity
     }
 
     public void onClickSaveMap(View view) {
-        long id = ExerciseEntryDbHelper.getInstance(this).insertEntry(mExerciseEntry);
-        Toast.makeText(getApplicationContext(),
-                "Entry #" + id + " Saved", Toast.LENGTH_SHORT).show();
+        new AsyncTask<Void, Void, Long>() {
+            @Override
+            protected Long doInBackground(Void... arg0) {
+                return ExerciseEntryDbHelper.getInstance(MapDisplayActivity.this)
+                        .insertEntry(mExerciseEntry);
+            }
+            @Override
+            protected void onPostExecute(Long id) {
+                Toast.makeText(getApplicationContext(),
+                        "Entry #" + id + " Saved", Toast.LENGTH_SHORT).show();
+            }
+        }.execute();
         doUnbindService();
         stopService(new Intent(this, TrackingService.class));
         setResult(RESULT_OK, new Intent());
@@ -261,8 +271,10 @@ public class MapDisplayActivity extends AppCompatActivity
     }
 
     public void onClickCancelMap(View view) {
-        Toast.makeText(getApplicationContext(),
-                "Entry Discarded", Toast.LENGTH_SHORT).show();
+        if (view != null) {
+            Toast.makeText(getApplicationContext(),
+                    "Entry Discarded", Toast.LENGTH_SHORT).show();
+        }
         doUnbindService();
         stopService(new Intent(this, TrackingService.class));
         setResult(RESULT_CANCELED, new Intent());
@@ -288,7 +300,14 @@ public class MapDisplayActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.map_display_delete:
-                ExerciseEntryDbHelper.getInstance(this).removeEntry(mExerciseEntry.getId());
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... arg0) {
+                        ExerciseEntryDbHelper.getInstance(MapDisplayActivity.this)
+                                .removeEntry(mExerciseEntry.getId());
+                        return null;
+                    }
+                }.execute();
                 setResult(RESULT_OK, new Intent());
                 finish();
                 return true;

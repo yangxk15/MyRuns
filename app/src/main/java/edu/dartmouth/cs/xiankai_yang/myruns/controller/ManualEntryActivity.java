@@ -1,6 +1,8 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -48,17 +50,34 @@ public class ManualEntryActivity extends AppCompatActivity {
 
     public void onClickSaveManualEntry(View view) {
         mExerciseEntry.setMDateTime(mCalendar);
-        long id = ExerciseEntryDbHelper.getInstance(this).insertEntry(mExerciseEntry);
-        Toast.makeText(getApplicationContext(),
-                "Entry #" + id + " Saved", Toast.LENGTH_SHORT).show();
+        new AsyncTask<Void, Void, Long>() {
+            @Override
+            protected Long doInBackground(Void... arg0) {
+                return ExerciseEntryDbHelper.getInstance(ManualEntryActivity.this)
+                        .insertEntry(mExerciseEntry);
+            }
+            @Override
+            protected void onPostExecute(Long id) {
+                Toast.makeText(getApplicationContext(),
+                        "Entry #" + id + " Saved", Toast.LENGTH_SHORT).show();
+            }
+        }.execute();
         setResult(RESULT_OK, new Intent());
         finish();
     }
 
     public void onClickCancelManualEntry(View view) {
-        Toast.makeText(getApplicationContext(),
-                "Manual Entry Discarded", Toast.LENGTH_SHORT).show();
+        if (view != null) {
+            Toast.makeText(getApplicationContext(),
+                    "Manual Entry Discarded", Toast.LENGTH_SHORT).show();
+        }
         setResult(RESULT_CANCELED, new Intent());
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        onClickCancelManualEntry(null);
+    }
+
 }

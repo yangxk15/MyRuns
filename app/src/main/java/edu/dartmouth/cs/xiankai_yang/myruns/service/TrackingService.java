@@ -251,6 +251,7 @@ public class TrackingService extends Service
         if (mAutomatic) {
             mSensorManager.unregisterListener(this);
             mPredictionTask.cancel(true);
+            mAutomatic = false;
         }
 
         mExerciseEntry = null;

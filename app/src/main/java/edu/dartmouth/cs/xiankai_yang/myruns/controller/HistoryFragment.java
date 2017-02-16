@@ -2,6 +2,7 @@ package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 
 import android.app.ListFragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,13 +66,24 @@ public class HistoryFragment extends ListFragment implements FragmentPagerUtil {
     }
 
     public void reload() {
-        if (exerciseEntries != null) {
-            exerciseEntries.clear();
-            exerciseEntries.addAll(
-                    ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries()
-            );
-            adapter.notifyDataSetChanged();
-        }
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                if (exerciseEntries != null) {
+                    exerciseEntries.clear();
+                    exerciseEntries.addAll(
+                            ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries()
+                    );
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+                return null;
+            }
+        }.execute();
     }
 
     @Override
