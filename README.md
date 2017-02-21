@@ -32,3 +32,7 @@ Assignment 4
   Bound Service: https://developer.android.com/guide/components/bound-services.html
 
   Services, BroadcastReceivers and Notifications: http://www.cs.dartmouth.edu/~xingdong/Teaching/CS65/lecture19/lecture19.html
+
+Assignment 5
+
+  Weka: http://www.cs.waikato.ac.nz/ml/weka/
