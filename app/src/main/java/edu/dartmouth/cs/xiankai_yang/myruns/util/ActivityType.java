@@ -21,7 +21,7 @@ public enum ActivityType {
     OTHER("Other");
 
     String text;
-    private ActivityType(String text) {
+    ActivityType(String text) {
         this.text = text;
     }
 

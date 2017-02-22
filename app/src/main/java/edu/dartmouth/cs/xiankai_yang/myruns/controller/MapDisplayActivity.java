@@ -262,11 +262,11 @@ public class MapDisplayActivity extends AppCompatActivity
             protected void onPostExecute(Long id) {
                 Toast.makeText(getApplicationContext(),
                         "Entry #" + id + " Saved", Toast.LENGTH_SHORT).show();
+                MainActivity.mHistoryFragment.reload();
             }
         }.execute();
         doUnbindService();
         stopService(new Intent(this, TrackingService.class));
-        setResult(RESULT_OK, new Intent());
         finish();
     }
 
@@ -277,7 +277,6 @@ public class MapDisplayActivity extends AppCompatActivity
         }
         doUnbindService();
         stopService(new Intent(this, TrackingService.class));
-        setResult(RESULT_CANCELED, new Intent());
         finish();
     }
 
@@ -300,14 +299,20 @@ public class MapDisplayActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.map_display_delete:
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Context, Void, Void>() {
                     @Override
-                    protected Void doInBackground(Void... arg0) {
-                        ExerciseEntryDbHelper.getInstance(MapDisplayActivity.this)
+                    protected Void doInBackground(Context... contexts) {
+                        ExerciseEntryDbHelper.getInstance(contexts[0])
                                 .removeEntry(mExerciseEntry.getId());
                         return null;
                     }
-                }.execute();
+                    @Override
+                    protected void onPostExecute(Void arg0) {
+                        Toast.makeText(getApplicationContext(),
+                                "Entry deleted", Toast.LENGTH_SHORT).show();
+                        MainActivity.mHistoryFragment.reload();
+                    }
+                }.execute(this);
                 setResult(RESULT_OK, new Intent());
                 finish();
                 return true;

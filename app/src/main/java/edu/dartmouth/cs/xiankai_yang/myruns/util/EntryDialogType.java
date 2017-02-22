@@ -15,7 +15,7 @@ public enum EntryDialogType {
 
     private String text;
 
-    private EntryDialogType(String text) {
+    EntryDialogType(String text) {
         this.text = text;
     }
 

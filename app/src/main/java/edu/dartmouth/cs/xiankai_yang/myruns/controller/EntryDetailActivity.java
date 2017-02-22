@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -50,15 +52,20 @@ public class EntryDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.entry_detail_delete:
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Context, Void, Void>() {
                     @Override
-                    protected Void doInBackground(Void... arg0) {
-                        ExerciseEntryDbHelper.getInstance(EntryDetailActivity.this)
+                    protected Void doInBackground(Context... contexts) {
+                        ExerciseEntryDbHelper.getInstance(contexts[0])
                                 .removeEntry(mExerciseEntry.getId());
                         return null;
                     }
-                }.execute();
-                setResult(RESULT_OK, new Intent());
+                    @Override
+                    protected void onPostExecute(Void arg0) {
+                        Toast.makeText(getApplicationContext(),
+                                "Entry deleted", Toast.LENGTH_SHORT).show();
+                        MainActivity.mHistoryFragment.reload();
+                    }
+                }.execute(this);
                 finish();
                 return true;
             default:

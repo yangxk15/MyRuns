@@ -36,7 +36,11 @@ public class ManualEntryActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.manual_entry_record_content);
         listView.setAdapter(
-                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, EntryDialogType.getTypes())
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_list_item_1,
+                        EntryDialogType.getTypes()
+                )
         );
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -50,19 +54,19 @@ public class ManualEntryActivity extends AppCompatActivity {
 
     public void onClickSaveManualEntry(View view) {
         mExerciseEntry.setMDateTime(mCalendar);
-        new AsyncTask<Void, Void, Long>() {
+        new AsyncTask<Context, Void, Long>() {
             @Override
-            protected Long doInBackground(Void... arg0) {
-                return ExerciseEntryDbHelper.getInstance(ManualEntryActivity.this)
+            protected Long doInBackground(Context... contexts) {
+                return ExerciseEntryDbHelper.getInstance(contexts[0])
                         .insertEntry(mExerciseEntry);
             }
             @Override
             protected void onPostExecute(Long id) {
                 Toast.makeText(getApplicationContext(),
                         "Entry #" + id + " Saved", Toast.LENGTH_SHORT).show();
+                MainActivity.mHistoryFragment.reload();
             }
-        }.execute();
-        setResult(RESULT_OK, new Intent());
+        }.execute(this);
         finish();
     }
 
@@ -71,7 +75,6 @@ public class ManualEntryActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),
                     "Manual Entry Discarded", Toast.LENGTH_SHORT).show();
         }
-        setResult(RESULT_CANCELED, new Intent());
         finish();
     }
 

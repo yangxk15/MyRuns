@@ -69,14 +69,6 @@ public class StartFragment extends Fragment implements FragmentPagerUtil {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            ((MainActivity) getActivity()).getMHistoryFragment().reload();
-        }
-    }
-
-    @Override
     public CharSequence getFragmentPagerTitle() {
         return "START";
     }

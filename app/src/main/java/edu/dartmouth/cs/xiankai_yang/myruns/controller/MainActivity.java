@@ -17,7 +17,6 @@ import edu.dartmouth.cs.xiankai_yang.myruns.R;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.FragmentPagerUtil;
 import lombok.Data;
 
-@Data
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
@@ -25,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String HISTORY = "History";
     private static final String SETTINGS = "Settings";
 
-    StartFragment mStartFragment;
-    HistoryFragment mHistoryFragment;
-    SettingsFragment mSettingsFragment;
+    static StartFragment mStartFragment;
+    static HistoryFragment mHistoryFragment;
+    static SettingsFragment mSettingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

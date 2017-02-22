@@ -23,7 +23,7 @@ public class SettingsFragment extends PreferenceFragment implements FragmentPage
         listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                ((MainActivity) getActivity()).getMHistoryFragment().reload();
+                MainActivity.mHistoryFragment.reload();
                 return true;
             }
         });

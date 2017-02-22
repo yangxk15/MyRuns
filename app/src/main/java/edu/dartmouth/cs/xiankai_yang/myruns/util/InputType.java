@@ -10,7 +10,7 @@ public enum InputType {
     AUTOMATIC("Automatic");
 
     String text;
-    private InputType(String text) {
+    InputType(String text) {
         this.text = text;
     }
 

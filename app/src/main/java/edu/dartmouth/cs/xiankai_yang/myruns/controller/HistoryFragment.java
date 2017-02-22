@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 
 import android.app.ListFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -55,24 +56,23 @@ public class HistoryFragment extends ListFragment implements FragmentPagerUtil {
         startActivityForResult(intent, ENTRY_DETAIL_REQUEST_CODE);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == ENTRY_DETAIL_REQUEST_CODE) {
-                reload();
-            }
-        }
-    }
-
     public void reload() {
-        if (exerciseEntries != null) {
-            exerciseEntries.clear();
-            exerciseEntries.addAll(
-                    ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries()
-            );
-            adapter.notifyDataSetChanged();
+        if (exerciseEntries == null) {
+            return;
         }
+
+        new AsyncTask<Context, Void, ArrayList<ExerciseEntry>>() {
+            @Override
+            protected ArrayList<ExerciseEntry> doInBackground(Context... contexts) {
+                return ExerciseEntryDbHelper.getInstance(contexts[0]).fetchEntries();
+            }
+            @Override
+            protected void onPostExecute(ArrayList<ExerciseEntry> newEntries) {
+                exerciseEntries.clear();
+                exerciseEntries.addAll(newEntries);
+                adapter.notifyDataSetChanged();
+            }
+        }.execute(getActivity());
     }
 
     @Override
