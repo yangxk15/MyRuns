@@ -66,24 +66,13 @@ public class HistoryFragment extends ListFragment implements FragmentPagerUtil {
     }
 
     public void reload() {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... arg0) {
-                if (exerciseEntries != null) {
-                    exerciseEntries.clear();
-                    exerciseEntries.addAll(
-                            ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries()
-                    );
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-                return null;
-            }
-        }.execute();
+        if (exerciseEntries != null) {
+            exerciseEntries.clear();
+            exerciseEntries.addAll(
+                    ExerciseEntryDbHelper.getInstance(getActivity()).fetchEntries()
+            );
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
