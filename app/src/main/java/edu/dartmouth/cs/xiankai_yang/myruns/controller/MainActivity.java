@@ -3,17 +3,28 @@ package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.xiankai_yang.myruns.R;
+import edu.dartmouth.cs.xiankai_yang.myruns.backend.registration.Registration;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.FragmentPagerUtil;
 import lombok.Data;
 
@@ -24,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String HISTORY = "History";
     private static final String SETTINGS = "Settings";
 
-    static StartFragment mStartFragment;
-    static HistoryFragment mHistoryFragment;
-    static SettingsFragment mSettingsFragment;
+    public static StartFragment mStartFragment;
+    public static HistoryFragment mHistoryFragment;
+    public static SettingsFragment mSettingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +94,60 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
+        new AsyncTask<Context, Void, String>() {
+            private Registration regService = null;
+            private GoogleCloudMessaging gcm;
+
+            @Override
+            protected String doInBackground(Context... contexts) {
+                if (regService == null) {
+                    regService = new Registration.Builder(
+                            AndroidHttp.newCompatibleTransport(),
+                            new AndroidJsonFactory(),
+                            null
+                    )
+                            // TODO: 2/22/17 for local testing
+                            .setRootUrl(contexts[0].getString(R.string.server_address) + "_ah/api/")
+                            .setGoogleClientRequestInitializer(
+                                    new GoogleClientRequestInitializer() {
+                                        @Override
+                                        public void initialize(
+                                                AbstractGoogleClientRequest<?>
+                                                        abstractGoogleClientRequest
+                                        )throws IOException {
+                                            abstractGoogleClientRequest.setDisableGZipContent(true);
+                                        }
+                                    }
+                            ).build();
+                }
+
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(contexts[0]);
+                    }
+
+                    String regId = gcm.register(contexts[0].getString(R.string.project_number));
+                    msg = "Device registered, registration ID = " + regId;
+
+                    // You should send the registration ID to your server over HTTP,
+                    // so it can use GCM/HTTP or CCS to send messages to your app.
+                    // The request to your server should be authenticated if your app
+                    // is using accounts.
+                    regService.register(regId).execute();
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    msg = "Error: " + ex.getMessage();
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            }
+        }.execute(this);
     }
 
     private void checkPermissions() {

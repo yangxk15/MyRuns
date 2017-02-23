@@ -17,10 +17,9 @@ import java.util.ArrayList;
 import edu.dartmouth.cs.xiankai_yang.myruns.R;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntryDbHelper;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ExerciseEntryAdapter;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.FragmentPagerUtil;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by yangxk15 on 1/16/17.

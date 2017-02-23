@@ -5,12 +5,20 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.example.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +28,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB75iGhU1q8qFKLR03MQc2j_jxdKAqJ_AQ"/>
+            android:value="@string/geo_api_key" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -42,9 +50,26 @@
         <activity android:name=".controller.ProfileActivity" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".controller.ManualEntryActivity" />
-        <activity android:name=".controller.MapDisplayActivity" android:launchMode="singleTop" />
+        <activity
+            android:name=".controller.MapDisplayActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".controller.EntryDetailActivity" />
-        <service android:name=".service.TrackingService" android:stopWithTask="false" />
+
+        <service
+            android:name=".service.TrackingService"
+            android:stopWithTask="false" />
+
+        <service android:name=".service.GcmIntentService" />
+
+        <receiver
+            android:name=".service.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="edu.dartmouth.cs.xiankai_yang.myruns" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

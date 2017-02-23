@@ -1,7 +1,6 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.controller;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +15,7 @@ import edu.dartmouth.cs.xiankai_yang.myruns.R;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntryDbHelper;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ExerciseEntryAdapter;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
 
 public class EntryDetailActivity extends AppCompatActivity {

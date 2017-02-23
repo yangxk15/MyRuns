@@ -38,6 +38,7 @@ import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntry;
 import edu.dartmouth.cs.xiankai_yang.myruns.model.ExerciseEntryDbHelper;
 import edu.dartmouth.cs.xiankai_yang.myruns.service.TrackingService;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ExerciseEntryAdapter;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.MessengerHelper;
 
 @TargetApi(24)
@@ -132,8 +133,12 @@ public class MapDisplayActivity extends AppCompatActivity
 
     protected void display() {
         if (mExerciseEntry == null) {
-            return;
+            if (TrackingService.mExerciseEntry == null) {
+                return;
+            }
+            mExerciseEntry = TrackingService.mExerciseEntry;
         }
+
         Log.d(TAG, "display");
 
         // Set up a bound to include all locations
@@ -184,29 +189,6 @@ public class MapDisplayActivity extends AppCompatActivity
 
     }
 
-    protected void update() {
-        if (mExerciseEntry == null) {
-            return;
-        }
-        Log.d(TAG, "update");
-        endLocation.remove();
-        endLocation = mGoogleMap.addMarker(new MarkerOptions()
-                .position(mExerciseEntry.getMLocationList().get(
-                        mExerciseEntry.getMLocationList().size() - 1
-                ))
-                .icon(BitmapDescriptorFactory.defaultMarker(
-                        BitmapDescriptorFactory.HUE_RED)
-                )
-        );
-        mPolyline.remove();
-        PolylineOptions polylineOptions = new PolylineOptions();
-        for (LatLng latLng : mExerciseEntry.getMLocationList()) {
-            polylineOptions.add(latLng);
-        }
-        mPolyline = mGoogleMap.addPolyline(polylineOptions);
-        setStats();
-    }
-
     @TargetApi(24)
     private void setStats() {
         mTextView.setText(TextUtils.join(System.lineSeparator(), new String[]{
@@ -240,7 +222,6 @@ public class MapDisplayActivity extends AppCompatActivity
 
         MessengerHelper.sendMessage(mMessenger, mServiceMessenger, REGISTER);
 
-        mExerciseEntry = TrackingService.mExerciseEntry;
         display();
     }
 
@@ -338,7 +319,7 @@ public class MapDisplayActivity extends AppCompatActivity
         @Override
         public void handleMessage(Message message) {
             if (message.what == TrackingService.UPDATE) {
-                update();
+                display();
             } else {
                 super.handleMessage(message);
             }

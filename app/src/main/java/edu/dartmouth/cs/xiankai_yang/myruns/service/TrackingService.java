@@ -64,6 +64,8 @@ public class TrackingService extends Service
     private Calendar lastCalendar;
     private Location startLocation;
 
+    private Bundle bundle;
+
     private Messenger mClientMessenger;
     private final Messenger mMessenger = new Messenger(new MapDisplayActivityHandler());
 
@@ -78,9 +80,9 @@ public class TrackingService extends Service
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
 
-        setupNotification(intent.getExtras());
+        bundle = intent.getExtras();
 
-        initExerciseEntry(intent.getExtras());
+        setupNotification();
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -91,10 +93,6 @@ public class TrackingService extends Service
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED ) {
             locationManager.requestLocationUpdates(provider, 500, 1, this);
-            lastLocation = startLocation = locationManager.getLastKnownLocation(provider);
-            mExerciseEntry.getMLocationList().add(
-                    new LatLng(startLocation.getLatitude(), startLocation.getLongitude())
-            );
         }
 
         if (intent.getExtras().getInt(StartFragment.INPUT_TYPE) == InputType.AUTOMATIC.ordinal()) {
@@ -152,7 +150,7 @@ public class TrackingService extends Service
     }
 
     @TargetApi(16)
-    private void setupNotification(Bundle bundle) {
+    private void setupNotification() {
         Intent intent = new Intent(getApplicationContext(), MapDisplayActivity.class);
         intent.putExtras(bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -177,16 +175,25 @@ public class TrackingService extends Service
                 .notify(NOTIFICATION, notification);
     }
 
-    private void initExerciseEntry(Bundle bundle) {
+    private void initExerciseEntry(Location location) {
         mExerciseEntry = new ExerciseEntry();
         mExerciseEntry.setMInputType(bundle.getInt(StartFragment.INPUT_TYPE));
         mExerciseEntry.setMActivityType(mAutomatic ? -1
                 : bundle.getInt(StartFragment.ACTIVITY_TYPE));
         mExerciseEntry.setMDateTime(lastCalendar = Calendar.getInstance());
         mExerciseEntry.setMLocationList(new ArrayList<LatLng>());
+        mExerciseEntry.getMLocationList().add(
+                new LatLng(location.getLatitude(), location.getLongitude())
+        );
+
+        lastLocation = startLocation = location;
     }
 
     private void updateExerciseEntry(Location location) {
+        if (mExerciseEntry == null) {
+            initExerciseEntry(location);
+            return;
+        }
         Calendar calendar = Calendar.getInstance();
 
         mExerciseEntry.getMLocationList().add(

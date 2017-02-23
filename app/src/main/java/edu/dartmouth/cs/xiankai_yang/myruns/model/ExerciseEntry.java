@@ -1,10 +1,14 @@
 package edu.dartmouth.cs.xiankai_yang.myruns.model;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -13,7 +17,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ActivityType;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.ExerciseEntryAdapter;
 import edu.dartmouth.cs.xiankai_yang.myruns.util.ExerciseEntryTableColumns;
+import edu.dartmouth.cs.xiankai_yang.myruns.util.InputType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -88,6 +95,28 @@ public class ExerciseEntry implements ExerciseEntryTableColumns {
         contentValues.put(_COMMENT, mComment);
         contentValues.put(_GPS_DATA, toLocationListByteArray(mLocationList));
         return contentValues;
+    }
+
+    /**
+     * Create a JSONObject from an ExerciseEntry
+     * @return created JSONObject instance
+     */
+    public JSONObject toJSONObject(Context context) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(_ID, String.valueOf(id));
+        jsonObject.put(_INPUT_TYPE, InputType.values()[mInputType]);
+        jsonObject.put(_ACTIVITY_TYPE, ActivityType.values()[mActivityType]);
+        jsonObject.put(_DATE_TIME, mDateTime == null
+                ? "" : DATE_FORMAT.format(mDateTime.getTime()));
+        jsonObject.put(_DURATION, ExerciseEntryAdapter.getFormattedTime(mDuration));
+        jsonObject.put(_DISTANCE, String.format("%.2f", mDistance) + " Miles");
+        jsonObject.put(_AVG_PACE, mAvgPace + "");
+        jsonObject.put(_AVG_SPEED, String.format("%.2f", mAvgSpeed) + " Miles/h");
+        jsonObject.put(_CALORIES, mCalorie + " Calories");
+        jsonObject.put(_CLIMB, String.format("%.2f", mClimb) + "");
+        jsonObject.put(_HEART_RATE, mHeartRate + "");
+        jsonObject.put(_COMMENT, mComment == null ? "" : mComment);
+        return jsonObject;
     }
 
 
