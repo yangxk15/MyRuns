@@ -111,7 +111,9 @@ public class StartFragment extends Fragment implements FragmentPagerUtil {
                                 );
                                 try {
                                     ServerUtilities.post(
-                                            mContext.getString(R.string.server_address) + "sync",
+                                            "https://"
+                                                    + contexts[0].getString(R.string.project_id)
+                                                    + ".appspot.com/sync",
                                             params
                                     );
                                     return "Synchronization success";

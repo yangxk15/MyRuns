@@ -106,19 +106,24 @@ public class MainActivity extends AppCompatActivity {
                             new AndroidJsonFactory(),
                             null
                     )
-                            // TODO: 2/22/17 for local testing
-                            .setRootUrl(contexts[0].getString(R.string.server_address) + "_ah/api/")
-                            .setGoogleClientRequestInitializer(
-                                    new GoogleClientRequestInitializer() {
-                                        @Override
-                                        public void initialize(
-                                                AbstractGoogleClientRequest<?>
-                                                        abstractGoogleClientRequest
-                                        )throws IOException {
-                                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                                        }
-                                    }
-                            ).build();
+                            .setRootUrl(
+                                    "https://"
+                                    + contexts[0].getString(R.string.project_id)
+                                    + ".appspot.com/_ah/api/")
+//                            //2/22/17 for local testing
+//                            .setRootUrl(contexts[0].getString(R.string.server_address) + "_ah/api/")
+//                            .setGoogleClientRequestInitializer(
+//                                    new GoogleClientRequestInitializer() {
+//                                        @Override
+//                                        public void initialize(
+//                                                AbstractGoogleClientRequest<?>
+//                                                        abstractGoogleClientRequest
+//                                        )throws IOException {
+//                                            abstractGoogleClientRequest.setDisableGZipContent(true);
+//                                        }
+//                                    }
+//                            )
+                            .build();
                 }
 
                 String msg = "";

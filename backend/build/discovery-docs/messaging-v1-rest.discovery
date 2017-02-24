@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"ODRTh3xaRR64wpeXJSlF33HMN-0/ObPaBvU90yZlEGu6D7US5qH_4BM\"",
+ "etag": "\"ODRTh3xaRR64wpeXJSlF33HMN-0/jesf25rI_4ejQDxMsvVajVJcJZA\"",
  "discoveryVersion": "v1",
  "id": "messaging:v1",
  "name": "messaging",
@@ -13,9 +13,9 @@
   "x32": "https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png"
  },
  "protocol": "rest",
- "baseUrl": "https://myApplicationId.appspot.com/_ah/api/messaging/v1/sendMessage/",
+ "baseUrl": "https://myruns-1486507445465.appspot.com/_ah/api/messaging/v1/sendMessage/",
  "basePath": "/_ah/api/messaging/v1/sendMessage/",
- "rootUrl": "https://myApplicationId.appspot.com/_ah/api/",
+ "rootUrl": "https://myruns-1486507445465.appspot.com/_ah/api/",
  "servicePath": "messaging/v1/sendMessage/",
  "batchPath": "batch",
  "parameters": {

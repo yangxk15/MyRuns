@@ -1,4 +1,7 @@
+# URL: http://myruns-1486507445465.appspot.com
+
 # MyRuns
+
 MyRuns application for CS65
 
 Need to install Lombok plugin to compile and run if you are using Android Studio.
@@ -36,3 +39,7 @@ Assignment 4
 Assignment 5
 
   Weka: http://www.cs.waikato.ac.nz/ml/weka/
+
+Assignment 6
+
+  App Engine Backend with Google Cloud Messaging: https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/master/GcmEndpoints

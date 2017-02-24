@@ -4,6 +4,7 @@
     <string name="app_file_provider_authority">edu.dartmouth.cs.xiankai_yang.myruns.fileprovider</string>
     <string name="geo_api_key">AIzaSyB75iGhU1q8qFKLR03MQc2j_jxdKAqJ_AQ</string>
     <string name="project_number">180593373757</string>
+    <string name="project_id">myruns-1486507445465</string>
     <string name="server_address">http://192.168.1.144:8080/</string>
 
     <!-- Profile Strings -->

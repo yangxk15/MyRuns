@@ -87,8 +87,6 @@ public class DisplayServlet extends HttpServlet {
                     "</body>" +
             "</html>"
         );
-
-        req.getRequestDispatcher("history.html").forward(req, resp);
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
